@@ -3,6 +3,7 @@
 #
 # Authors:
 #   Sorin Ionescu <sorin.ionescu@gmail.com>
+#   Andrew Wong <wongadev@gmail.com>
 #
 
 #
@@ -38,7 +39,7 @@ unsetopt CHECK_JOBS       # Don't report on jobs when shell exit.
 #
 
 if zstyle -t ':prezto:environment:grep' color; then
-  export GREP_COLOR='37;45'
+  export GREP_COLOR='30;43'
   export GREP_OPTIONS='--color=auto'
 fi
 
@@ -47,12 +48,12 @@ fi
 #
 
 if zstyle -t ':prezto:environment:termcap' color; then
-  export LESS_TERMCAP_mb=$'\E[01;31m'      # Begins blinking.
-  export LESS_TERMCAP_md=$'\E[01;31m'      # Begins bold.
+  export LESS_TERMCAP_mb=$'\E[01;32m'      # Begins blinking.
+  export LESS_TERMCAP_md=$'\E[01;32m'      # Begins bold.
   export LESS_TERMCAP_me=$'\E[0m'          # Ends mode.
   export LESS_TERMCAP_se=$'\E[0m'          # Ends standout-mode.
-  export LESS_TERMCAP_so=$'\E[00;47;30m'   # Begins standout-mode.
+  export LESS_TERMCAP_so=$'\E[00;30;43m'   # Begins standout-mode.
   export LESS_TERMCAP_ue=$'\E[0m'          # Ends underline.
-  export LESS_TERMCAP_us=$'\E[01;32m'      # Begins underline.
+  export LESS_TERMCAP_us=$'\E[01;04;34m'   # Begins underline.
 fi
 
