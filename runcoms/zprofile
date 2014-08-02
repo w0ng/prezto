@@ -73,8 +73,14 @@ if [[ ! -d "$TMPPREFIX" ]]; then
 fi
 
 #
-# Set environment variables required by other applications
+# Set environment variables used by other applications
 #
 
+# Execute terminal for ranger
 export TERMCMD='urxvtc'
+
+# Home directory for virtualenvwrapper
 export WORKON_HOME="$HOME/.virtualenvs"
+
+# Better font rendering for Java apps
+export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel'
