@@ -76,9 +76,6 @@ fi
 # Set environment variables used by other applications
 #
 
-# Point java to the jdk path
-export JAVA_HOME="/usr/lib/jvm/java-7-openjdk java -version"
-
 # Execute terminal for ranger
 export TERMCMD='urxvtc'
 
