@@ -38,6 +38,7 @@ zle -N up-line-or-beginning-search
 zle -N down-line-or-beginning-search
 bindkey -M viins '^N' down-line-or-beginning-search
 bindkey -M viins '^P' up-line-or-beginning-search
+bindkey -M viins 'jj' vi-cmd-mode
 
 #
 # Aliases
