@@ -36,10 +36,7 @@ bindkey -M viins 'jj' vi-cmd-mode
 # Aliases
 #
 
+alias grep='grep --color=auto'
 alias ix="curl -n -F 'f:1=<-' http://ix.io"
+alias ls='ls -hFG'
 alias sprunge="curl -F 'sprunge=<-' http://sprunge.us"
-
-#export GREP_COLOR="1;31"
-#alias grep='grep --color=auto'
-#export LESS="-R"
-#alias ls='ls -hFG'
