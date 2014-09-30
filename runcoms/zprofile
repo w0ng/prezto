@@ -12,16 +12,14 @@
 
 if [[ "$OSTYPE" == darwin* ]]; then
   export BROWSER='open'
-else
-  export BROWSER='firefox'
 fi
 
 #
 # Editors
 #
 
-export EDITOR='vim'
-export VISUAL='vim'
+export EDITOR='/usr/local/bin/vim'
+export VISUAL='/usr/local/bin/vim'
 export PAGER='less'
 
 #
@@ -45,7 +43,6 @@ typeset -gU cdpath fpath mailpath path
 path=(
   /usr/local/{bin,sbin}
   $path
-  $HOME/bin
 )
 
 #
@@ -64,23 +61,11 @@ fi
 
 # Uses /tmp instead of /tmp/$USER so that tmux works.
 if [[ ! -d "$TMPDIR" ]]; then
-  export TMPDIR="/tmp"
+  export TMPDIR="/tmp/$USER"
+  mkdir -p -m 700 "$TMPDIR"
 fi
 
 TMPPREFIX="${TMPDIR%/}/zsh"
 if [[ ! -d "$TMPPREFIX" ]]; then
   mkdir -p "$TMPPREFIX"
 fi
-
-#
-# Set environment variables used by other applications
-#
-
-# Execute terminal for ranger
-export TERMCMD='urxvtc'
-
-# Home directory for virtualenvwrapper
-export WORKON_HOME="$HOME/.virtualenvs"
-
-# Better font rendering for Java apps
-export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel'

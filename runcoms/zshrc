@@ -21,14 +21,6 @@ fi
 setopt noflowcontrol
 
 #
-# Use better constrasting dir colours
-#
-
-if [[ -f "$HOME/.config/dir_colours" ]]; then
-  eval $(dircolors -b "$HOME/.config/dir_colours")
-fi
-
-#
 # Personalised key bindings
 #
 
@@ -44,14 +36,10 @@ bindkey -M viins 'jj' vi-cmd-mode
 # Aliases
 #
 
-alias fm="urxvtc -name filemgr -e ranger"
-alias grep="grep --color=auto"
 alias ix="curl -n -F 'f:1=<-' http://ix.io"
-alias ls="ls -hFH --color=auto --group-directories-first"
-alias lsp="ls++ --potsf"
-alias ntfsmount="sudo ntfs-3g -o gid=100,fmask=113,dmask=002 /dev/sde1 /mnt/usb"
-alias tm="urxvtc -name ircmailbt -e tmux attach-session -d -t 0"
-alias qe="qemu-system-x86_64 -enable-kvm"
 alias sprunge="curl -F 'sprunge=<-' http://sprunge.us"
-alias usbmount="sudo mount -o gid=100,fmask=113,dmask=002 /dev/sde1 /mnt/usb"
-alias usbumount="sudo umount /mnt/usb"
+
+#export GREP_COLOR="1;31"
+#alias grep='grep --color=auto'
+#export LESS="-R"
+#alias ls='ls -hFG'

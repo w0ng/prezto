@@ -14,9 +14,3 @@
     zcompile "$zcompdump"
   fi
 } &!
-
-# Create a single ssh-agent process on login
-if (( $+commands[keychain] )); then
-  eval $(keychain --eval --agents ssh -Q --quiet id_rsa)
-fi
-
