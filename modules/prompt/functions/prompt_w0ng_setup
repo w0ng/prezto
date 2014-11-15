@@ -12,11 +12,11 @@ pmodload 'helper'
 # Make prompt depending on whether or not $PWD is a git directory
 function make_prompt {
   if [[ -z "${git_info}" ]]; then
-    echo -n "%K{8}%B%F{white} %~ %b%k%F{8}%f
+    echo -n "%K{8}%B%F{white} %~ %b%k
 ${editor_info[keymap]} "
   else
-    echo -n "%K{8}%B%F{white} %~ %b%K{black}%F{8}%f%k\
-%K{black}%F{white} ${(e)git_info[text]}%(!. %B%F{red}#%f%b.)%f%k${git_info[symbols]}%K{black} %k%F{black}%f
+    echo -n "%K{8}%B%F{white} %~ %b%k\
+%K{black}%F{white}${(e)git_info[text]}%(!. %B%F{red}#%f%b.)%f%k${git_info[symbols]}%K{black} %k
 ${editor_info[keymap]} "
   fi
 }
