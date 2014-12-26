@@ -41,9 +41,7 @@ typeset -gU cdpath fpath mailpath path
 # )
 
 path=(
-  /Users/Home/bin
-  /Users/Home/.android-sdk/platform-tools
-  /Applications/XAMPP/bin
+  /Users/andrew/repositories/bin
   /usr/local/{bin,sbin}
   $path
 )
