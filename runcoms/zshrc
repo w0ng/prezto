@@ -36,6 +36,7 @@ bindkey -M viins 'jj' vi-cmd-mode
 # Aliases
 #
 
+alias app-store-list="$(find /Applications/*.app/Contents/_MASReceipt -type f -name 'receipt' -maxdepth 1 -print | sed 's#^/Applications/\(.*\)\.app/.*#echo \1#')"
 alias grep='grep --color=auto'
 alias ix="curl -n -F 'f:1=<-' http://ix.io"
 alias ls='ls -hFG'
