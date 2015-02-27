@@ -62,7 +62,7 @@ fi
 
 # Uses /tmp instead of /tmp/$USER so that tmux works.
 if [[ ! -d "$TMPDIR" ]]; then
-  export TMPDIR="/tmp/$USER"
+  export TMPDIR="/tmp/$LOGNAME"
   mkdir -p -m 700 "$TMPDIR"
 fi
 
