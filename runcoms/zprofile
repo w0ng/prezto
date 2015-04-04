@@ -75,4 +75,8 @@ fi
 # Application Envs
 #
 
+# Path helper for mactex
+eval `/usr/libexec/path_helper -s`
+
+# Use native/older Java for OSX
 export JAVA_HOME='/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home'
