@@ -40,3 +40,4 @@ alias grep='grep --color=auto'
 alias ix="curl -n -F 'f:1=<-' http://ix.io"
 alias ls='ls -hFG'
 alias sprunge="curl -F 'sprunge=<-' http://sprunge.us"
+alias tm="tmux attach-session -d -t 0"
