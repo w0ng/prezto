@@ -15,6 +15,18 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
 fi
 
 #
+# Use GNU for ls on OSX. gdircolors is installed via `brew install coreutils`.
+#
+
+if is-callable 'gdircolors'; then
+  if [[ -s "$HOME/.dir_colors" ]]; then
+    eval "$(gdircolors --sh "$HOME/.dir_colors")"
+  else
+    eval "$(gdircolors --sh)"
+  fi
+fi
+
+#
 # Disable flow control
 #
 
@@ -38,6 +50,7 @@ bindkey -M viins 'jj' vi-cmd-mode
 
 alias grep='grep --color=auto'
 alias ix="curl -n -F 'f:1=<-' http://ix.io"
-alias ls='ls -hFG'
+#alias ls='ls -hFG'
+alias ls='/usr/local/bin/gls -hFH --group-directories-first --color=auto'
 alias sprunge="curl -F 'sprunge=<-' http://sprunge.us"
 alias tm="tmux attach-session -d -t 0"
