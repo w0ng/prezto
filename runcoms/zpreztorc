@@ -19,6 +19,8 @@ zstyle ':prezto:load' pmodule \
   'history' \
   'directory' \
   'spectrum' \
+  'gnu-utility' \
+  'utility' \
   'git' \
   'archive' \
   'completion' \
