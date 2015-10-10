@@ -87,3 +87,10 @@ export JAVA_HOME='/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Ho
 if [[ -r "$HOME/.tokens" ]]; then
     source "$HOME/.tokens"
 fi
+
+# fzf color scheme
+export FZF_DEFAULT_OPTS='
+    --extended
+    --color dark,bg+:8,fg+:7,hl:11,hl+:11
+    --color info:10,prompt:12,pointer:9,marker:3,spinner:10
+'

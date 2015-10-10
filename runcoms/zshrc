@@ -15,6 +15,14 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
 fi
 
 #
+# Source fzf: a command-line fuzzy finder written in Go
+#
+
+if [[ -s "$HOME/.fzf.zsh" ]]; then
+  source "$HOME/.fzf.zsh"
+fi
+
+#
 # Use GNU for ls on OSX. gdircolors is installed via `brew install coreutils`.
 #
 
@@ -30,7 +38,7 @@ fi
 # Disable flow control
 #
 
-setopt noflowcontrol
+setopt NO_FLOW_CONTROL
 
 #
 # Personalised key bindings
@@ -48,9 +56,17 @@ bindkey -M viins 'jj' vi-cmd-mode
 # Aliases
 #
 
-alias grep='grep --color=auto'
+alias cdw="cd $HOME/repositories/work"
+alias cdd="cd $HOME/dev/www"
+
 alias ix="curl -n -F 'f:1=<-' http://ix.io"
-#alias ls='ls -hFG'
-alias ls='/usr/local/bin/gls -hFH --group-directories-first --color=auto'
+alias ls="${aliases[ls]:-ls} --classify --human-readable"
 alias sprunge="curl -F 'sprunge=<-' http://sprunge.us"
 alias tm="tmux attach-session -d -t 0"
+
+alias vg="vagrant global-status"
+alias vh="vagrant halt"
+alias vs="vagrant ssh"
+alias vu="vagrant up"
+alias vuh="vagrant up && vagrant halt"
+alias vus="vagrant up && vagrant ssh"
