@@ -60,7 +60,7 @@ alias cdw="cd $HOME/repositories/work"
 alias cdd="cd $HOME/dev/www"
 
 alias ix="curl -n -F 'f:1=<-' http://ix.io"
-alias ls="${aliases[ls]:-ls} --classify --human-readable"
+alias ls='/usr/local/bin/gls --group-directories-first --color=auto --classify --human-readable'
 alias sprunge="curl -F 'sprunge=<-' http://sprunge.us"
 alias tm="tmux attach-session -d -t 0"
 
