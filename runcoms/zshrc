@@ -64,6 +64,8 @@ alias ls='/usr/local/bin/gls --group-directories-first --color=auto --classify -
 alias sprunge="curl -F 'sprunge=<-' http://sprunge.us"
 alias tm="tmux attach-session -d -t 0"
 
+alias vim="nvim"
+alias vimdiff="nvim -d"
 alias vg="vagrant global-status"
 alias vh="vagrant halt"
 alias vs="vagrant ssh"
