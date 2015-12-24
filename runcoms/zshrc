@@ -56,20 +56,27 @@ bindkey -M viins 'jj' vi-cmd-mode
 # Aliases
 #
 
+# Frequently accessed directories
 alias cdw="cd $HOME/repositories/work"
 alias cdd="cd $HOME/dev/www"
 
+# Pastebins
 alias ix="curl -n -F 'f:1=<-' http://ix.io"
-alias ls='/usr/local/bin/gls --group-directories-first --color=auto --classify --human-readable'
 alias sprunge="curl -F 'sprunge=<-' http://sprunge.us"
-alias tm="tmux attach-session -d -t 0"
 
-alias vim="nvim"
-alias vimdiff="nvim -d"
+# Vagrant
+alias vd="vagrant destroy"
 alias vg="vagrant global-status"
 alias vh="vagrant halt"
+alias vp="vagrant provision"
 alias vs="vagrant ssh"
 alias vu="vagrant up"
 alias vuh="vagrant up && vagrant halt"
 alias vus="vagrant up && vagrant ssh"
+
+# Other friendly shortcuts
+alias ls='/usr/local/bin/gls --group-directories-first --color=auto --classify --human-readable'
+alias tm="tmux attach-session -d -t 0"
+alias vim="nvim"
+alias vimdiff="nvim -d"
 alias zf="$HOME/.composer/vendor/zendframework/zendframework1/bin/zf.sh"
