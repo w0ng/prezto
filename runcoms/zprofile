@@ -41,9 +41,8 @@ typeset -gU cdpath fpath mailpath path
 # )
 
 path=(
-  /Users/andrew/repositories/bin
+  /Users/andrew/bin
   /Users/andrew/.composer/vendor/bin
-  /usr/texbin
   /usr/local/{bin,sbin}
   $path
 )
@@ -84,9 +83,6 @@ eval `/usr/libexec/path_helper -s`
 if [[ -r "$HOME/.tokens" ]]; then
     source "$HOME/.tokens"
 fi
-
-# Use native/older Java for OSX
-export JAVA_HOME='/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home'
 
 # fzf color scheme
 export FZF_DEFAULT_OPTS='
