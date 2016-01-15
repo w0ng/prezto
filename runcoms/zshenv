@@ -3,7 +3,13 @@
 #
 # Authors:
 #   Sorin Ionescu <sorin.ionescu@gmail.com>
+#   Andrew Wong <wongadev@gmail.com>
 #
+
+# Set the directory for zsh configuration files.
+if [[ -z "$ZDOTDIR" ]]; then
+  export ZDOTDIR="$HOME/.config/zsh"
+fi
 
 # Ensure that a non-login, non-interactive shell has a defined environment.
 if [[ "$SHLVL" -eq 1 && ! -o LOGIN && -s "${ZDOTDIR:-$HOME}/.zprofile" ]]; then
