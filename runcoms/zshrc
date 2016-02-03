@@ -57,8 +57,9 @@ bindkey -M viins 'jj' vi-cmd-mode
 #
 
 # Frequently accessed directories
-alias cdw="cd $HOME/repositories/work"
-alias cdd="cd $HOME/dev/www"
+alias cdd="cd $HOME/dotfiles"
+alias cdh="cd $HOME/dev/www/homestead"
+alias cdu="cd $HOME/dev/www/ubuntu"
 
 # Pastebins
 alias ix="curl -n -F 'f:1=<-' http://ix.io"
