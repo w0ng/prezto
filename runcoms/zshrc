@@ -7,10 +7,19 @@
 #
 
 #
+# Source fzf
+#
+
+if [[ -s "${ZDOTDIR:-$HOME}/.fzf.zsh" ]]; then
+  source "${ZDOTDIR:-$HOME}/.fzf.zsh"
+fi
+
+#
 # Source Prezto.
 #
 
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
+  export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --smart-case'
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
