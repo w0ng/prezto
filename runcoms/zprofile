@@ -36,6 +36,7 @@ fi
 
 typeset -gU cdpath fpath mailpath path
 
+# Set the list of directories that cd searches.
 # cdpath=(
 #   $cdpath
 # )
@@ -57,26 +58,8 @@ if (( $#commands[(i)lesspipe(|.sh)] )); then
 fi
 
 #
-# Temporary Files
-#
-
-# Uses /tmp instead of /tmp/$USER so that tmux works.
-if [[ ! -d "$TMPDIR" ]]; then
-  export TMPDIR="/tmp/$LOGNAME"
-  mkdir -p -m 700 "$TMPDIR"
-fi
-
-TMPPREFIX="${TMPDIR%/}/zsh"
-if [[ ! -d "$TMPPREFIX" ]]; then
-  mkdir -p "$TMPPREFIX"
-fi
-
-#
 # Application Envs
 #
-
-# Path helper for mactex
-eval `/usr/libexec/path_helper -s`
 
 # Include command-line API tokens
 if [[ -r "$HOME/.tokens" ]]; then
@@ -86,11 +69,11 @@ fi
 # Init Node Version Manager
 # Manually update path to reduce load time:
 # https://github.com/creationix/nvm/issues/860
-if [[ -s "/usr/local/opt/nvm/nvm.sh" ]]; then
+if [[ -s "$HOME/.nvm/nvm.sh" ]]; then
   export NVM_DIR="$HOME/.nvm"
-  source "/usr/local/opt/nvm/nvm.sh" --no-use
+  source "$HOME/.nvm/nvm.sh" --no-use
   path=(
-    $HOME/.nvm/versions/node/v8.9.1/bin
+    $HOME/.nvm/versions/node/v8.11.1/bin
     $path
   )
 fi
