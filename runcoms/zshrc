@@ -19,7 +19,7 @@ fi
 #
 
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
-  export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --smart-case'
+  export FZF_DEFAULT_COMMAND='rg --files --hidden --smart-case --glob "!.git/*"'
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
@@ -79,3 +79,4 @@ alias vus="vagrant up && vagrant ssh"
 alias ga='highlight "$HOME/.zprezto/modules/git/alias.zsh" -O ansi | less'
 alias ls='/usr/local/bin/gls --group-directories-first --color=auto --classify --human-readable'
 alias tm="tmux attach-session -d -t 0"
+alias vim="nvim"
