@@ -1,76 +1,248 @@
 #
-# An modification of prompt_sorin_setup, using powerline glyphs
+# A modification of prompt_sorin_setup
 #
 # Authors:
 #   Sorin Ionescu <sorin.ionescu@gmail.com>
 #   Andrew Wong <wongadev@gmail.com>
 #
+# Screenshots:
+#   http://i.imgur.com/nrGV6pg.png
+#
+
+#
+# 16 Terminal Colors
+# -- ---------------
+#  0 black
+#  1 red
+#  2 green
+#  3 yellow
+#  4 blue
+#  5 magenta
+#  6 cyan
+#  7 white
+#  8 bright black
+#  9 bright red
+# 10 bright green
+# 11 bright yellow
+# 12 bright blue
+# 13 bright magenta
+# 14 bright cyan
+# 15 bright white
+#
 
 # Load dependencies.
 pmodload 'helper'
 
-# Make prompt depending on whether or not $PWD is a git directory
-function make_prompt {
-  if [[ -z "${git_info}" ]]; then
-    echo -n "%K{8}%B%F{white} %~ %b%k
-${editor_info[keymap]} "
-  else
-    echo -n "%K{8}%B%F{white} %~ %b%k\
-%K{black}%F{white}${(e)git_info[text]}%(!. %B%F{red}#%f%b.)%f%k${git_info[symbols]}%K{black} %k
-${editor_info[keymap]} "
+function prompt_w0ng_async_callback {
+  case $1 in
+    prompt_w0ng_async_git)
+      # We can safely split on ':' because it isn't allowed in ref names.
+      IFS=':' read _git_target _git_post_target <<<"$3"
+
+      # The target actually contains 3 space separated possibilities, so we need to
+      # make sure we grab the first one.
+      _git_target=$(coalesce ${(@)${(z)_git_target}})
+
+      if [[ -z "$_git_target" ]]; then
+        # No git target detected, flush the git fragment and redisplay the prompt.
+        if [[ -n "$_prompt_w0ng_git" ]]; then
+          _prompt_w0ng_git=''
+          zle && zle reset-prompt
+        fi
+      else
+        # Git target detected, update the git fragment and redisplay the prompt.
+        _prompt_w0ng_git="${_git_target}${_git_post_target}"
+        zle && zle reset-prompt
+      fi
+      ;;
+    "[async]")
+      # Code is 1 for corrupted worker output and 2 for dead worker.
+      if [[ $2 -eq 2 ]]; then
+	  # Our worker died unexpectedly.
+          typeset -g prompt_prezto_async_init=0
+      fi
+      ;;
+  esac
+}
+
+function prompt_w0ng_async_git {
+  cd -q "$1"
+  if (( $+functions[git-info] )); then
+    git-info
+    print ${git_info[status]}
   fi
+}
+
+function prompt_w0ng_async_tasks {
+  # Initialize async worker. This needs to be done here and not in
+  # prompt_w0ng_setup so the git formatting can be overridden by other prompts.
+  if (( !${prompt_prezto_async_init:-0} )); then
+    async_start_worker prompt_w0ng -n
+    async_register_callback prompt_w0ng prompt_w0ng_async_callback
+    typeset -g prompt_prezto_async_init=1
+  fi
+
+  # Kill the old process of slow commands if it is still running.
+  async_flush_jobs prompt_w0ng
+
+  # Compute slow commands in the background.
+  async_job prompt_w0ng prompt_w0ng_async_git "$PWD"
 }
 
 function prompt_w0ng_precmd {
   setopt LOCAL_OPTIONS
   unsetopt XTRACE KSH_ARRAYS
 
-  # Get Git repository information.
-  if (( $+functions[git-info] )); then
-    git-info
+  # Format PWD.
+  _prompt_w0ng_pwd=$(prompt-pwd)
+
+  # Handle updating git data. We also clear the git prompt data if we're in a
+  # different git root now.
+  if (( $+functions[git-dir] )); then
+    local new_git_root="$(git-dir 2> /dev/null)"
+    if [[ $new_git_root != $_w0ng_cur_git_root ]]; then
+      _prompt_w0ng_git=''
+      _w0ng_cur_git_root=$new_git_root
+    fi
   fi
+
+  prompt_w0ng_async_tasks
 }
 
 function prompt_w0ng_setup {
   setopt LOCAL_OPTIONS
   unsetopt XTRACE KSH_ARRAYS
-  prompt_opts=(cr percent subst)
+  prompt_opts=(cr percent sp subst)
 
   # Load required functions.
   autoload -Uz add-zsh-hook
+  autoload -Uz async && async
 
   # Add hook for calling git-info before each command.
   add-zsh-hook precmd prompt_w0ng_precmd
 
+  # Tell prezto we can manage this prompt
+  zstyle ':prezto:module:prompt' managed 'yes'
+
   # Set editor-info parameters.
-  zstyle ':prezto:module:editor:info:completing' format '%B%F{red}...%f%b'
-  zstyle ':prezto:module:editor:info:keymap:primary' format '%F{green} $%f'
-  zstyle ':prezto:module:editor:info:keymap:primary:overwrite' format ' %F{red}♺%f'
-  zstyle ':prezto:module:editor:info:keymap:alternate' format '%F{red} $%f'
+  zstyle ':prezto:module:editor:info:completing' format '%B%F{7}...%f%b'
+  zstyle ':prezto:module:editor:info:keymap:primary' format ' %B%F{1}❯%F{3}❯%F{2}❯%f%b'
+  zstyle ':prezto:module:editor:info:keymap:primary:overwrite' format ' %F{3}♺%f'
+  zstyle ':prezto:module:editor:info:keymap:alternate' format ' %B%F{2}❮%F{3}❮%F{1}❮%f%b'
 
   # Set git-info parameters.
   zstyle ':prezto:module:git:info' verbose 'yes'
-  zstyle ':prezto:module:git:info:action' format '%K{black}:%%B%F{white}%s%f%%b%k'
-  zstyle ':prezto:module:git:info:added' format '%K{black} %%B%F{green}✚%f%%b%k'
-  zstyle ':prezto:module:git:info:ahead' format '%K{black} %%B%F{yellow}⬆%f%%b%k'
-  zstyle ':prezto:module:git:info:behind' format '%K{black} %%B%F{yellow}⬇%f%%b%k'
-  zstyle ':prezto:module:git:info:branch' format '%K{black} %F{white}%b%f'
-  zstyle ':prezto:module:git:info:commit' format '%K{black} %F{white}%.7c%f'
-  zstyle ':prezto:module:git:info:deleted' format '%K{black} %%B%F{red}✖%f%%b%k'
-  zstyle ':prezto:module:git:info:modified' format '%K{black} %%B%F{blue}✱%f%%b%k'
-  zstyle ':prezto:module:git:info:position' format '%K{black} %F{white}%p%f'
-  zstyle ':prezto:module:git:info:renamed' format '%K{black} %%B%F{magenta}➜%f%%b%k'
-  zstyle ':prezto:module:git:info:stashed' format '%K{black} %%B%F{cyan}✭%f%%b%k'
-  zstyle ':prezto:module:git:info:unmerged' format '%K{black} %%B%F{yellow}═%f%%b%k'
-  zstyle ':prezto:module:git:info:untracked' format '%K{black} %%B%F{white}◼%f%%b%k'
+  zstyle ':prezto:module:git:info:action' format '%F{7}:%f%%B%F{9}%s%f%%b'
+  zstyle ':prezto:module:git:info:added' format ' %%B%F{2}✚%f%%b'
+  zstyle ':prezto:module:git:info:ahead' format ' %%B%F{13}⬆%f%%b'
+  zstyle ':prezto:module:git:info:behind' format ' %%B%F{13}⬇%f%%b'
+  zstyle ':prezto:module:git:info:branch' format ' %%B%F{2}%b%f%%b'
+  zstyle ':prezto:module:git:info:commit' format ' %%B%F{3}%.7c%f%%b'
+  zstyle ':prezto:module:git:info:deleted' format ' %%B%F{1}✖%f%%b'
+  zstyle ':prezto:module:git:info:modified' format ' %%B%F{4}✱%f%%b'
+  zstyle ':prezto:module:git:info:position' format ' %%B%F{13}%p%f%%b'
+  zstyle ':prezto:module:git:info:renamed' format ' %%B%F{5}➜%f%%b'
+  zstyle ':prezto:module:git:info:stashed' format ' %%B%F{6}✭%f%%b'
+  zstyle ':prezto:module:git:info:unmerged' format ' %%B%F{3}═%f%%b'
+  zstyle ':prezto:module:git:info:untracked' format ' %%B%F{7}◼%f%%b'
   zstyle ':prezto:module:git:info:keys' format \
-    'text' '$(coalesce "%b" "%p" "%c")%s' \
-    'symbols' '%A%B%S%a%d%m%r%U%u'
+    'status' '%b %p %c:%s%A%B%S%a%d%m%r%U%u'
+
+  # Set up non-zero return value display
+  local show_return="✘ "
+  # Default is to show the return value
+  if zstyle -T ':prezto:module:prompt' show-return-val; then
+    show_return+='%? '
+  fi
+
+  # Get the async worker set up.
+  _w0ng_cur_git_root=''
+
+  _prompt_w0ng_git=''
+  _prompt_w0ng_pwd=''
 
   # Define prompts.
-  PROMPT='$(make_prompt)'
-  SPROMPT='zsh: correct %F{red}%R%f to %F{green}%r%f [nyae]? '
+  PROMPT='${SSH_TTY:+"%F{9}%n%f%F{7}@%f%F{3}%m%f "}%F{4}${_prompt_w0ng_pwd}%(!. %B%F{1}#%f%b.)${editor_info[keymap]} '
+  SPROMPT='zsh: correct %F{1}%R%f to %F{2}%r%f [nyae]? '
+}
+
+function prompt_w0ng_preview {
+  local +h PROMPT=''
+  local +h RPROMPT=''
+  local +h SPROMPT=''
+
+  editor-info 2> /dev/null
+  prompt_preview_theme 'w0ng'
 }
 
 prompt_w0ng_setup "$@"
 
+# # Load dependencies.
+# pmodload 'helper'
+
+# # Make prompt depending on whether or not $PWD is a git directory
+# function make_prompt {
+#   if [[ -z "${git_info}" ]]; then
+#     echo -n "%K{8}%B%F{white} %~ %b%k
+# ${editor_info[keymap]} "
+#   else
+#     echo -n "%K{8}%B%F{white} %~ %b%k\
+# %K{black}%F{white}${(e)git_info[text]}%(!. %B%F{red}#%f%b.)%f%k${git_info[symbols]}%K{black} %k
+# ${editor_info[keymap]} "
+#   fi
+# }
+
+# function prompt_w0ng_old_precmd {
+#   setopt LOCAL_OPTIONS
+#   unsetopt XTRACE KSH_ARRAYS
+
+#   # Get Git repository information.
+#   if (( $+functions[git-info] )); then
+#     git-info
+#   fi
+# }
+
+# function prompt_w0ng_old_setup {
+#   setopt LOCAL_OPTIONS
+#   unsetopt XTRACE KSH_ARRAYS
+#   prompt_opts=(cr percent subst)
+
+#   # Load required functions.
+#   autoload -Uz add-zsh-hook
+
+#   # Add hook for calling git-info before each command.
+#   add-zsh-hook precmd prompt_w0ng_old_precmd
+
+#   # Set editor-info parameters.
+#   zstyle ':prezto:module:editor:info:completing' format '%B%F{red}...%f%b'
+#   zstyle ':prezto:module:editor:info:keymap:primary' format '%F{green} $%f'
+#   zstyle ':prezto:module:editor:info:keymap:primary:overwrite' format ' %F{red}♺%f'
+#   zstyle ':prezto:module:editor:info:keymap:alternate' format '%F{red} $%f'
+
+#   # Set git-info parameters.
+#   zstyle ':prezto:module:git:info' verbose 'yes'
+#   zstyle ':prezto:module:git:info:action' format '%K{black}:%%B%F{white}%s%f%%b%k'
+#   zstyle ':prezto:module:git:info:added' format '%K{black} %%B%F{green}✚%f%%b%k'
+#   zstyle ':prezto:module:git:info:ahead' format '%K{black} %%B%F{yellow}⬆%f%%b%k'
+#   zstyle ':prezto:module:git:info:behind' format '%K{black} %%B%F{yellow}⬇%f%%b%k'
+#   zstyle ':prezto:module:git:info:branch' format '%K{black} %F{white}%b%f'
+#   zstyle ':prezto:module:git:info:commit' format '%K{black} %F{white}%.7c%f'
+#   zstyle ':prezto:module:git:info:deleted' format '%K{black} %%B%F{red}✖%f%%b%k'
+#   zstyle ':prezto:module:git:info:modified' format '%K{black} %%B%F{blue}✱%f%%b%k'
+#   zstyle ':prezto:module:git:info:position' format '%K{black} %F{white}%p%f'
+#   zstyle ':prezto:module:git:info:renamed' format '%K{black} %%B%F{magenta}➜%f%%b%k'
+#   zstyle ':prezto:module:git:info:stashed' format '%K{black} %%B%F{cyan}✭%f%%b%k'
+#   zstyle ':prezto:module:git:info:unmerged' format '%K{black} %%B%F{yellow}═%f%%b%k'
+#   zstyle ':prezto:module:git:info:untracked' format '%K{black} %%B%F{white}◼%f%%b%k'
+#   zstyle ':prezto:module:git:info:keys' format \
+#     'text' '$(coalesce "%b" "%p" "%c")%s' \
+#     'symbols' '%A%B%S%a%d%m%r%U%u'
+
+#   # Define prompts.
+#   PROMPT='$(make_prompt)'
+#   SPROMPT='zsh: correct %F{red}%R%f to %F{green}%r%f [nyae]? '
+# }
+
+# prompt_w0ng_old_setup "$@"
+
+# vim: ft=zsh
