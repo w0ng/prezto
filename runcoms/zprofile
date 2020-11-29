@@ -3,7 +3,6 @@
 #
 # Authors:
 #   Sorin Ionescu <sorin.ionescu@gmail.com>
-#   Andrew Wong <wongadev@gmail.com>
 #
 
 #
@@ -18,8 +17,8 @@ fi
 # Editors
 #
 
-export EDITOR='/usr/local/bin/vim'
-export VISUAL='/usr/local/bin/vim'
+export EDITOR='nano'
+export VISUAL='nano'
 export PAGER='less'
 
 #
@@ -27,13 +26,14 @@ export PAGER='less'
 #
 
 if [[ -z "$LANG" ]]; then
-  export LANG='en_AU.UTF-8'
+  export LANG='en_US.UTF-8'
 fi
 
 #
 # Paths
 #
 
+# Ensure path arrays do not contain duplicates.
 typeset -gU cdpath fpath mailpath path
 
 # Set the list of directories that cd searches.
@@ -41,8 +41,8 @@ typeset -gU cdpath fpath mailpath path
 #   $cdpath
 # )
 
+# Set the list of directories that Zsh searches for programs.
 path=(
-  $HOME/bin
   /usr/local/{bin,sbin}
   $path
 )
@@ -51,29 +51,13 @@ path=(
 # Less
 #
 
-export LESS='-i -R'
+# Set the default Less options.
+# Mouse-wheel scrolling has been disabled by -X (disable screen clearing).
+# Remove -X and -F (exit if the content fits on one screen) to enable it.
+export LESS='-F -g -i -M -R -S -w -X -z-4'
 
+# Set the Less input preprocessor.
+# Try both `lesspipe` and `lesspipe.sh` as either might exist on a system.
 if (( $#commands[(i)lesspipe(|.sh)] )); then
   export LESSOPEN="| /usr/bin/env $commands[(i)lesspipe(|.sh)] %s 2>&-"
-fi
-
-#
-# Application Envs
-#
-
-# Include command-line API tokens
-if [[ -r "$HOME/.tokens" ]]; then
-    source "$HOME/.tokens"
-fi
-
-# Init Node Version Manager
-# Manually update path to reduce load time:
-# https://github.com/creationix/nvm/issues/860
-if [[ -s "$HOME/.nvm/nvm.sh" ]]; then
-  export NVM_DIR="$HOME/.nvm"
-  source "$HOME/.nvm/nvm.sh" --no-use
-  path=(
-    $HOME/.nvm/versions/node/v8.11.1/bin
-    $path
-  )
 fi

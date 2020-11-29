@@ -3,14 +3,16 @@
 #
 # Authors:
 #   Sorin Ionescu <sorin.ionescu@gmail.com>
-#   Andrew Wong <wongadev@gmail.com>
 #
 
 #
 # General
 #
 
-zstyle ':prezto:*:*' case-sensitive 'yes'
+# Set case-sensitivity for completion, history lookup, etc.
+# zstyle ':prezto:*:*' case-sensitive 'yes'
+
+# Color output (auto set to 'no' on dumb terminals).
 zstyle ':prezto:*:*' color 'yes'
 
 # Add additional directories to load prezto modules from
@@ -35,10 +37,7 @@ zstyle ':prezto:load' pmodule \
   'directory' \
   'spectrum' \
   'utility' \
-  'git' \
-  'archive' \
   'completion' \
-  'syntax-highlighting' \
   'prompt'
 
 #
@@ -61,7 +60,7 @@ zstyle ':prezto:load' pmodule \
 #
 
 # Set the key mapping style to 'emacs' or 'vi'.
-zstyle ':prezto:module:editor' key-bindings 'vi'
+zstyle ':prezto:module:editor' key-bindings 'emacs'
 
 # Auto convert .... to ../..
 # zstyle ':prezto:module:editor' dot-expansion 'yes'
@@ -117,7 +116,7 @@ zstyle ':prezto:module:editor' key-bindings 'vi'
 # Set the prompt theme to load.
 # Setting it to 'random' loads a random theme.
 # Auto set to 'off' on dumb terminals.
-zstyle ':prezto:module:prompt' theme 'w0ng'
+zstyle ':prezto:module:prompt' theme 'sorin'
 
 # Set the working directory prompt display length.
 # By default, it is set to 'short'. Set it to 'long' (without '~' expansion)
@@ -149,9 +148,18 @@ zstyle ':prezto:module:prompt' theme 'w0ng'
 # Screen
 #
 
-zstyle ':prezto:module:terminal' auto-title 'yes'
-zstyle ':prezto:module:terminal:window-title' format '%n@%m: %s'
-zstyle ':prezto:module:terminal:tab-title' format '%m: %s'
+# Auto start a session when Zsh is launched in a local terminal.
+# zstyle ':prezto:module:screen:auto-start' local 'yes'
+
+# Auto start a session when Zsh is launched in a SSH connection.
+# zstyle ':prezto:module:screen:auto-start' remote 'yes'
+
+#
+# SSH
+#
+
+# Set the SSH identities to load into the agent.
+# zstyle ':prezto:module:ssh:load' identities 'id_rsa' 'id_rsa2' 'id_github'
 
 #
 # Syntax Highlighting
@@ -166,12 +174,6 @@ zstyle ':prezto:module:terminal:tab-title' format '%m: %s'
 #   'line' \
 #   'cursor' \
 #   'root'
-zstyle ':prezto:module:syntax-highlighting' highlighters \
-  'main' \
-  'brackets' \
-  'pattern' \
-  'cursor' \
-  'root'
 #
 # Set syntax highlighting styles.
 # zstyle ':prezto:module:syntax-highlighting' styles \
@@ -200,7 +202,7 @@ zstyle ':prezto:module:syntax-highlighting' highlighters \
 # zstyle ':prezto:module:terminal:multiplexer-title' format '%s'
 
 #
-# Prompt
+# Tmux
 #
 
 # Auto start a session when Zsh is launched in a local terminal.

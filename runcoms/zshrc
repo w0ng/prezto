@@ -3,80 +3,11 @@
 #
 # Authors:
 #   Sorin Ionescu <sorin.ionescu@gmail.com>
-#   Andrew Wong <wongadev@gmail.com>
 #
 
-#
-# Source fzf
-#
-
-if [[ -s "${ZDOTDIR:-$HOME}/.fzf.zsh" ]]; then
-  source "${ZDOTDIR:-$HOME}/.fzf.zsh"
-fi
-
-#
 # Source Prezto.
-#
-
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
-  export FZF_DEFAULT_COMMAND='rg --files --hidden --smart-case --glob "!.git/*"'
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
-#
-# Use GNU for ls on OSX. gdircolors is installed via `brew install coreutils`.
-#
-
-if is-callable 'gdircolors'; then
-  if [[ -s "$HOME/.dir_colors" ]]; then
-    eval "$(gdircolors --sh "$HOME/.dir_colors")"
-  else
-    eval "$(gdircolors --sh)"
-  fi
-fi
-
-#
-# Disable flow control
-#
-
-setopt NO_FLOW_CONTROL
-
-#
-# Personalised key bindings
-#
-
-autoload -Uz up-line-or-beginning-search
-autoload -Uz down-line-or-beginning-search
-zle -N up-line-or-beginning-search
-zle -N down-line-or-beginning-search
-bindkey -M viins '^N' down-line-or-beginning-search
-bindkey -M viins '^P' up-line-or-beginning-search
-bindkey -M viins 'jj' vi-cmd-mode
-
-#
-# Aliases
-#
-
-# Frequently accessed directories
-alias cdd="cd $HOME/dotfiles"
-alias cdd="cd $HOME/dev/www"
-
-# Pastebins
-alias ix="curl -n -F 'f:1=<-' http://ix.io"
-alias sprunge="curl -F 'sprunge=<-' http://sprunge.us"
-
-# Vagrant
-alias vd="vagrant destroy"
-alias vg="vagrant global-status"
-alias vh="vagrant halt"
-alias vp="vagrant provision"
-alias vs="vagrant ssh"
-alias vu="vagrant up"
-alias vuh="vagrant up && vagrant halt"
-alias vus="vagrant up && vagrant ssh"
-
-# Other friendly shortcuts
-alias ga='highlight "$HOME/.zprezto/modules/git/alias.zsh" -O ansi | less'
-alias ls='/usr/local/bin/gls --group-directories-first --color=auto --classify --human-readable'
-alias tm="tmux attach-session -d -t 0"
-alias vim="nvim"
+# Customize to your needs...

@@ -53,7 +53,6 @@ if ! zstyle -t ':prezto:module:git:alias' skip 'yes'; then
   alias gc='git commit --verbose'
   alias gca='git commit --verbose --all'
   alias gcm='git commit --message'
-  alias gcM='git commit --amend --message'
   alias gcS='git commit -S --verbose'
   alias gcSa='git commit -S --verbose --all'
   alias gcSm='git commit -S --message'
