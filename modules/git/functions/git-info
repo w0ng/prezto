@@ -350,7 +350,7 @@ function git-info {
     (( dirty = indexed + unindexed + untracked ))
   else
     # Use porcelain status for easy parsing.
-    status_cmd="GIT_OPTIONAL_LOCKS=0 command git status --porcelain --ignore-submodules=${ignore_submodules:-none}"
+    status_cmd="command git --no-optional-locks status --porcelain --ignore-submodules=${ignore_submodules:-none}"
 
     # Get current status.
     while IFS=$'\n' read line; do
