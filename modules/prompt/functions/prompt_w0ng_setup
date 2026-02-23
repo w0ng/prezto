@@ -155,7 +155,8 @@ function prompt_w0ng_setup {
   _prompt_w0ng_pwd=''
 
   # Define prompts.
-  PROMPT='%K{8}%B%F{15} ${_prompt_w0ng_pwd} %f%b%k'
+  PROMPT='%K{0}%B%F{15} %n@%m:%f%b%k'
+  PROMPT+='%K{8}%B%F{15} ${_prompt_w0ng_pwd} %f%b%k'
 	PROMPT+='%K{0}${_prompt_w0ng_git}%(!. %B%F{1}#%f%b.)%k'
 	PROMPT+=$'\n'
 	PROMPT+='${editor_info[keymap]} '
